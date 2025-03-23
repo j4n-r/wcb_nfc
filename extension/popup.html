@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>NFC Tag Manager</title>
+  <meta charset="utf-8">
+  <style>
+.small-button {
+  font-size: 10px;
+  padding: 2px 5px;
+  background-color: #f44336;
+}
+/* Add this to your existing styles */
+.button-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+#getCurrentUrlBtn {
+  background-color: #34a853;
+}
+
+#getCurrentUrlBtn:hover {
+  background-color: #2e8b57;
+}
+
+#errorLog .log-entry {
+  border-bottom: 1px solid #eee;
+  padding: 5px 0;
+}
+
+#errorLog .timestamp {
+  color: #666;
+  font-size: 10px;
+}
+
+#errorLog .error-message {
+  color: #f44336;
+  font-weight: bold;
+}
+
+#errorLog .error-details {
+  color: #666;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+    body {
+      font-family: Arial, sans-serif;
+      width: 320px;
+      padding: 15px;
+    }
+    
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .card {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .card-header {
+      font-weight: bold;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .status {
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 12px;
+    }
+    
+    .status-connected {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    
+    .status-disconnected {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+    
+    button {
+      background-color: #4285f4;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    
+    button:hover {
+      background-color: #3367d6;
+    }
+    
+    button:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+    
+    textarea {
+      width: 100%;
+      height: 80px;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+      resize: none;
+      font-family: inherit;
+      box-sizing: border-box;
+    }
+    
+    .message {
+      margin-top: 10px;
+      padding: 8px;
+      border-radius: 4px;
+    }
+    
+    .success {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    
+    .error {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="card-header">
+        Reader Status
+        <span id="readerStatus" class="status status-disconnected">Disconnected</span>
+      </div>
+      <div>
+        <button id="connectBtn">Connect Reader</button>
+        <button id="disconnectBtn" disabled>Disconnect</button>
+        <button id="pollBtn" disabled>Poll Card</button>
+      </div>
+      <div id="statusMessage" class="message" style="display: none;"></div>
+    </div>
+    
+    <div class="card">
+      <div class="card-header">Read Tag</div>
+      <button id="readBtn" disabled>Read Tag</button>
+      <div id="readResult" style="margin-top: 10px; word-break: break-all;"></div>
+    </div>
+    
+ <div class="card">
+  <div class="card-header">Write Tag</div>
+  <textarea id="writeData" placeholder="Enter data to write to the tag"></textarea>
+  <div style="margin-top: 10px; display: flex; gap: 10px;">
+    <button id="getCurrentUrlBtn">Get Current URL</button>
+    <button id="writeBtn" disabled>Write Tag</button>
+  </div>
+  <div id="writeResult" class="message" style="display: none;"></div>
+</div>
+ 
+  <script src="popup.js"></script>
+<!-- Add this at the end of your container div -->
+<div class="card" id="errorLogCard" style="display: none;">
+  <div class="card-header">
+    Error Log
+    <button id="clearLogBtn" class="small-button">Clear</button>
+  </div>
+  <div id="errorLog" style="max-height: 200px; overflow-y: auto; font-family: monospace; font-size: 12px;"></div>
+</div>
+
+<div style="margin-top: 15px; text-align: center;">
+  <button id="toggleLogBtn">Show Error Log</button>
+</div>
+
+</body>
+</html>
